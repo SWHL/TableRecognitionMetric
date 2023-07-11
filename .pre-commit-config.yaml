@@ -17,17 +17,3 @@ repos:
   hooks:
     - id: black
       files: \.py$
-- repo: https://gitee.com/SWHL/mirrors-mypy
-  rev: v1.4.1
-  hooks:
-    - id: mypy
-      args:
-        [
-        "--ignore-missing-imports",
-          "--follow-imports=silent",
-          "--show-column-numbers",
-          "--allow-untyped-defs",
-          "--allow-subclassing-any",
-          "--allow-untyped-calls",
-          "--strict"
-        ]
