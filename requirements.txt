@@ -1,0 +1,5 @@
+apted>=1.0.3
+lxml>=4.9.3
+levenshtein
+modelscope
+rapid_table

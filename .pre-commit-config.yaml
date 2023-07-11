@@ -1,0 +1,33 @@
+repos:
+- repo: https://gitee.com/SWHL/autoflake
+  rev: v2.1.1
+  hooks:
+    - id: autoflake
+      args:
+        [
+          "--recursive",
+          "--in-place",
+          "--remove-all-unused-imports",
+          "--remove-unused-variable",
+          "--ignore-init-module-imports",
+        ]
+      files: \.py$
+- repo: https://gitee.com/SWHL/black
+  rev: 23.1.0
+  hooks:
+    - id: black
+      files: \.py$
+- repo: https://gitee.com/SWHL/mirrors-mypy
+  rev: v1.4.1
+  hooks:
+    - id: mypy
+      args:
+        [
+        "--ignore-missing-imports",
+          "--follow-imports=silent",
+          "--show-column-numbers",
+          "--allow-untyped-defs",
+          "--allow-subclassing-any",
+          "--allow-untyped-calls",
+          "--strict"
+        ]
