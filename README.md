@@ -12,3 +12,6 @@
 - 指标计算代码参考：[PaddleOCR](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.6/ppstructure/table/table_metric/table_metric.py) 和 [DAVAR-Lab-OCR](https://github.com/hikopensource/DAVAR-Lab-OCR/blob/main/davarocr/davar_table/utils/metric.py)
 
 #### TODO
+- [ ] 配置`setup.py`文件
+- [ ] 编写单元测试
+- [ ] 打包为whl，上传到pypi
