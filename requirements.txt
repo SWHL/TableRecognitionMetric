@@ -1,5 +1,3 @@
 apted>=1.0.3
 lxml>=4.9.3
 levenshtein
-modelscope==1.5.2
-rapid_table
