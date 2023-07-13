@@ -2,6 +2,7 @@
 <p align="left">
     <a href=""><img src="https://img.shields.io/badge/OS-Linux%2C%20Win%2C%20Mac-pink.svg"></a>
     <a href=""><img src="https://img.shields.io/badge/python->=3.6,<3.12-aff.svg"></a>
+    <a href="https://pypi.org/project/table_recognition_metric/"><img alt="PyPI" src="https://img.shields.io/pypi/v/table_recognition_metric"></a>
     <a href="https://pepy.tech/project/table-recognition-metric"><img src="https://static.pepy.tech/personalized-badge/table-recognition-metric?period=total&units=abbreviation&left_color=grey&right_color=blue&left_text=Downloads"></a>
 <a href="https://semver.org/"><img alt="SemVer2.0" src="https://img.shields.io/badge/SemVer-2.0-brightgreen"></a>
     <a href="https://github.com/psf/black"><img src="https://img.shields.io/badge/code%20style-black-000000.svg"></a>
@@ -38,3 +39,5 @@ pred_html = '<html><body><table><tr><td>购买方</td><td colspan="5">纳税人�
 score = teds(gt_html, pred_html)
 print(score)
 ```
+
+### See details for [TableRecognitionMetric](https://github.com/SWHL/TableRecognitionMetric).
