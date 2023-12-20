@@ -88,7 +88,7 @@ print(score)
 
 ### Tree-EditDistance-based Similarity (TEDS)
 - TEDS是IBM在论文《[Image-based table recognition: data, model, and evaluation](https://arxiv.org/pdf/1911.10683)》中提出的。
-- 之前提出的评测算法，主要是将一个表格的`ground truth`和`recognition result`各自展平为非空cell两两之间的邻接关系列表。然后通过比较这两个列表，来计算precision, recall和F1-score。该metric主要存在两个明显问题：
+- [之前提出的评测算法](https://ieeexplore.ieee.org/document/1227792)，主要是将一个表格的`ground truth`和`recognition result`各自展平为非空cell两两之间的邻接关系列表。然后通过比较这两个列表，来计算precision, recall和F1-score。该metric主要存在两个明显问题：
     1. 由于它只检查非空单元格之间的直接邻接关系，因此它无法检测由空单元格和超出直接邻居的单元格未对齐引起的错误；
     2. 由于它通过精准匹配来检查关系，因此它没有衡量fine-grained单元格内容识别性能的机制。
 - 针对以上问题，TEDS通过以下方法予以解决：
