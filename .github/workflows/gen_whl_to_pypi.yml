@@ -2,12 +2,14 @@ name: Push table_recognition_metric to pypi
 
 on:
   push:
-    branches: [ main ]
-    paths:
-      - 'table_recognition_metric/**'
-      - 'docs/doc_whl.md'
-      - 'setup.py'
-      - '.github/workflows/gen_whl_to_pypi.yml'
+    # branches: [ main ]
+    # paths:
+    #   - 'table_recognition_metric/**'
+    #   - 'docs/doc_whl.md'
+    #   - 'setup.py'
+    #   - '.github/workflows/gen_whl_to_pypi.yml'
+    tags:
+      - v*
 
 jobs:
   UnitTesting:

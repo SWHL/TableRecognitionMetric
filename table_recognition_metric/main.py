@@ -14,6 +14,7 @@ from typing import List, Optional, Tuple
 
 from apted import APTED, Config
 from apted.helpers import Tree
+from bs4 import BeautifulSoup
 from Levenshtein import distance
 from lxml import etree, html
 from lxml.html import HtmlElement
@@ -29,7 +30,7 @@ class TEDS:
         self.ignore_nodes = ignore_nodes
         self.__tokens__: List[str] = []
 
-    def __call__(self, pred: str, gt: str) -> float:
+    def __call__(self, pred: str, gt: str, is_structure: bool = False) -> float:
         """Computes TEDS score between the prediction and the ground truth of a
         given sample
 
@@ -42,6 +43,10 @@ class TEDS:
         """
         if (not pred) or (not gt):
             return 0.0
+
+        if is_structure:
+            pred = self.get_table_structure(pred)
+            gt = self.get_table_structure(gt)
 
         parser = html.HTMLParser(remove_comments=True, encoding="utf-8")
         pred_element: HtmlElement = html.fromstring(pred, parser=parser)
@@ -66,8 +71,13 @@ class TEDS:
             n_nodes_true = len(gt_element.xpath(".//*"))
             n_nodes = max(n_nodes_pred, n_nodes_true)
             return 1.0 - (float(distance) / n_nodes)
-        else:
-            return 0.0
+        return 0.0
+
+    def get_table_structure(self, html_):
+        bs_data = BeautifulSoup(html_, "html.parser")
+        for i in bs_data.find_all("td"):
+            i.string = ""
+        return str(bs_data)
 
     def tokenize(self, node: HtmlElement):
         """Tokenizes table cells"""
@@ -154,9 +164,11 @@ class CustomConfig(Config):
             or (node1.rowspan != node2.rowspan)
         ):
             return 1.0
+
         if node1.tag == "td":
             if node1.content or node2.content:
                 return self.normalized_distance(node1.content, node2.content)
+
         return 0.0
 
 
