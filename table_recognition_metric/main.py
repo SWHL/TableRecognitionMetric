@@ -14,7 +14,6 @@ from typing import List, Optional, Tuple
 
 from apted import APTED, Config
 from apted.helpers import Tree
-from bs4 import BeautifulSoup
 from Levenshtein import distance
 from lxml import etree, html
 from lxml.html import HtmlElement
