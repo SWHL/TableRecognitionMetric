@@ -105,3 +105,7 @@ print(score)
    $$TEDS(T_{a}, T_{b}) = 1 - \frac{EditDist(T_{a}, T_{b})}{max(|T_{a}|, |T_{b}|)}$$
 
     其中， $EditDist$指的是**tree-edit distance**, $|T|$ 指的是在 $T$ 中节点的数量。一个表格还原算法在一系列测试集上识别效果可以定义为：测试集中所有样例逐个计算其**ground truth**和**predict result**之间的TEDS，最终对所有样例的TEDS求均值得到最终得分。
+
+### 更新日志
+#### 2023-12-27 v0.0.4 update:
+- 显示添加计算S-TEDS指标参数
