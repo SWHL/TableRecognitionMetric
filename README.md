@@ -21,12 +21,13 @@ pip install table_recognition_metric
 - Usage:
     ```bash
     $ table_recognition_metric -h
-    usage: table_recognition_metric [-h] [-gt GT_HTML] [-pred PRED_HTML]
+    usage: table_recognition_metric [-h] [-steds] [-gt GT_HTML] [-pred PRED_HTML]
 
-    optional arguments:
+    options:
     -h, --help            show this help message and exit
+    -steds, --structure_only
     -gt GT_HTML, --gt_html GT_HTML
-    -pred PRED_HTML, --pred_html PRED_HTM
+    -pred PRED_HTML, --pred_html PRED_HTML
     ```
 - Example:
     ```bash
@@ -35,6 +36,10 @@ pip install table_recognition_metric
     # 0.0
     ```
 #### 脚本运行
+> 如果只需要计算Struct-TEDS，只需在声明TEDS实例时，传入参数`structure_only=True`即可，默认该参数为`False`，即计算TEDS. e.g.
+>
+> `teds = TEDS(structure_only=True)`
+
 ```python
 from table_recognition_metric import TEDS
 
@@ -45,13 +50,14 @@ pred_html = '<html><body><table><tr><td>购买方</td><td colspan="5">纳税人�
 
 score = teds(gt_html, pred_html)
 print(score)
+# 1.0
 ```
 
 #### 数据集上评测
 - 这里以[`rapid-table`](https://github.com/RapidAI/RapidStructure/blob/main/docs/README_Table.md)在表格数据集[liekkas/table_recognition](https://www.modelscope.cn/datasets/liekkas/table_recognition/summary)上的评测代码，大家可以以此类推。
 - 安装必要的包
     ```bash
-    pip install modelscope==1.5.2
+    pip install modelscope
     pip install rapid_table
     pip install rapidocr_onnxruntime==1.3.8
     ```

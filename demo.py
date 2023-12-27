@@ -13,7 +13,7 @@ test_data = MsDataset.load(
     split="test",
 )
 table_engine = RapidTable()
-teds = TEDS()
+teds = TEDS(structure_only=True)
 
 content = []
 for one_data in test_data:

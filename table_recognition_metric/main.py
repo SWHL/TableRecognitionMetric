@@ -30,7 +30,7 @@ class TEDS:
         self.ignore_nodes = ignore_nodes
         self.__tokens__: List[str] = []
 
-    def __call__(self, pred: str, gt: str, is_structure: bool = False) -> float:
+    def __call__(self, pred: str, gt: str) -> float:
         """Computes TEDS score between the prediction and the ground truth of a
         given sample
 
@@ -43,10 +43,6 @@ class TEDS:
         """
         if (not pred) or (not gt):
             return 0.0
-
-        if is_structure:
-            pred = self.get_table_structure(pred)
-            gt = self.get_table_structure(gt)
 
         parser = html.HTMLParser(remove_comments=True, encoding="utf-8")
         pred_element: HtmlElement = html.fromstring(pred, parser=parser)
@@ -72,12 +68,6 @@ class TEDS:
             n_nodes = max(n_nodes_pred, n_nodes_true)
             return 1.0 - (float(distance) / n_nodes)
         return 0.0
-
-    def get_table_structure(self, html_):
-        bs_data = BeautifulSoup(html_, "html.parser")
-        for i in bs_data.find_all("td"):
-            i.string = ""
-        return str(bs_data)
 
     def tokenize(self, node: HtmlElement):
         """Tokenizes table cells"""
@@ -174,6 +164,9 @@ class CustomConfig(Config):
 
 def main():
     parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "-steds", "--structure_only", action="store_true", default=False
+    )
     parser.add_argument("-gt", "--gt_html", type=str, default=None)
     parser.add_argument("-pred", "--pred_html", type=str, default=None)
     args = parser.parse_args()
@@ -184,7 +177,7 @@ def main():
     if args.pred_html is None:
         raise ValueError("pred_html must be non-empty.")
 
-    teds = TEDS()
+    teds = TEDS(structure_only=args.structure_only)
 
     score = teds(args.gt_html, args.pred_html)
     print(score)
