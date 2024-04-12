@@ -43,6 +43,7 @@ pip install table_recognition_metric
     # 0.0
     ```
 #### 脚本运行
+> [!NOTE]
 > 如果只需要计算Struct-TEDS，只需在声明TEDS实例时，传入参数`structure_only=True`即可，默认该参数为`False`，即计算TEDS. e.g.
 >
 > `teds = TEDS(structure_only=True)`
