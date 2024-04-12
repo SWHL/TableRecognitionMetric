@@ -1,15 +1,22 @@
-## Table Recognition Metric
-<p align="left">
-    <a href=""><img src="https://img.shields.io/badge/OS-Linux%2C%20Win%2C%20Mac-pink.svg"></a>
-    <a href=""><img src="https://img.shields.io/badge/python->=3.6,<3.12-aff.svg"></a>
-    <a href="https://pypi.org/project/table_recognition_metric/"><img alt="PyPI" src="https://img.shields.io/pypi/v/table_recognition_metric"></a>
-    <a href="https://pepy.tech/project/table-recognition-metric"><img src="https://static.pepy.tech/personalized-badge/table-recognition-metric?period=total&units=abbreviation&left_color=grey&right_color=blue&left_text=Downloads"></a>
-<a href="https://semver.org/"><img alt="SemVer2.0" src="https://img.shields.io/badge/SemVer-2.0-brightgreen"></a>
-    <a href="https://github.com/psf/black"><img src="https://img.shields.io/badge/code%20style-black-000000.svg"></a>
-</p>
+<div align="center">
+  <div align="center">
+    <h1><b>Table Recognition Metric</b></h1>
+  </div>
 
-- 该库用于计算TEDS指标，用来评测表格识别算法效果。可与[魔搭-表格识别测试集](https://www.modelscope.cn/datasets/liekkas/table_recognition/summary)配套使用。
-- TEDS计算代码参考：[PaddleOCR](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.6/ppstructure/table/table_metric/table_metric.py) 和 [DAVAR-Lab-OCR](https://github.com/hikopensource/DAVAR-Lab-OCR/blob/main/davarocr/davar_table/utils/metric.py)
+<a href=""><img src="https://img.shields.io/badge/OS-Linux%2C%20Win%2C%20Mac-pink.svg"></a>
+<a href=""><img src="https://img.shields.io/badge/python->=3.6,<3.12-aff.svg"></a>
+<a href="https://pypi.org/project/table_recognition_metric/"><img alt="PyPI" src="https://img.shields.io/pypi/v/table_recognition_metric"></a>
+<a href="https://pepy.tech/project/table-recognition-metric"><img src="https://static.pepy.tech/personalized-badge/table-recognition-metric?period=total&units=abbreviation&left_color=grey&right_color=blue&left_text=Downloads"></a>
+<a href="https://semver.org/"><img alt="SemVer2.0" src="https://img.shields.io/badge/SemVer-2.0-brightgreen"></a>
+<a href="https://github.com/psf/black"><img src="https://img.shields.io/badge/code%20style-black-000000.svg"></a>
+
+</div>
+
+
+### 简介
+该库用于计算TEDS指标，用来评测表格识别算法效果。可与[魔搭-表格识别测试集](https://www.modelscope.cn/datasets/liekkas/table_recognition/summary)配套使用。
+
+TEDS计算代码参考：[PaddleOCR](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.6/ppstructure/table/table_metric/table_metric.py) 和 [DAVAR-Lab-OCR](https://github.com/hikopensource/DAVAR-Lab-OCR/blob/main/davarocr/davar_table/utils/metric.py)
 
 ### 安装
 ```bash
@@ -54,42 +61,42 @@ print(score)
 ```
 
 #### 数据集上评测
-- 这里以[`rapid-table`](https://github.com/RapidAI/RapidStructure/blob/main/docs/README_Table.md)在表格数据集[liekkas/table_recognition](https://www.modelscope.cn/datasets/liekkas/table_recognition/summary)上的评测代码，大家可以以此类推。
+- 这里以[`rapid-table`](https://github.com/RapidAI/RapidStructure/blob/main/docs/README_Table.md)在表格数据集[table_rec_test_dataset](https://huggingface.co/datasets/SWHL/table_rec_test_dataset)上的评测代码，大家可以以此类推。
 - 安装必要的包
     ```bash
-    pip install modelscope
+    pip install datasets
     pip install rapid_table
-    pip install rapidocr_onnxruntime==1.3.8
+    pip install rapidocr_onnxruntime
+    pip install table_recognition_metric
     ```
 - 运行测试
     ```python
-    from modelscope.msdatasets import MsDataset
+    import numpy as np
+    from datasets import load_dataset
     from rapid_table import RapidTable
+    from tqdm import tqdm
 
     from table_recognition_metric import TEDS
 
-    test_data = MsDataset.load(
-        "table_recognition",
-        namespace="liekkas",
-        subset_name="default",
-        split="test",
-    )
+    dataset = load_dataset("SWHL/table_rec_test_dataset")
+    test_data = dataset["test"]
+
     table_engine = RapidTable()
-    teds = TEDS()
+    teds = TEDS(structure_only=True)
 
     content = []
-    for one_data in test_data:
-        img_path = one_data.get("image:FILE")
-        gt = one_data.get("label")
+    for one_data in tqdm(test_data):
+        img = one_data.get("image")
+        gt = one_data.get("html")
 
-        pred_str, _ = table_engine(img_path)
+        pred_str, _, _ = table_engine(np.array(img))
+
         scores = teds(gt, pred_str)
         content.append(scores)
-        print(f"{img_path}\t{scores:.5f}")
 
     avg = sum(content) / len(content)
-    print(avg)
-    # Avg TEDS: 0.5878639284345777
+    print(f"TEDS: {avg:.5f}")
+
     ```
 
 ### Tree-EditDistance-based Similarity (TEDS)
