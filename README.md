@@ -14,7 +14,7 @@
 
 
 ### 简介
-该库用于计算TEDS指标，用来评测表格识别算法效果。可与[魔搭-表格识别测试集](https://www.modelscope.cn/datasets/liekkas/table_recognition/summary)配套使用。
+该库用于计算TEDS指标，用来评测表格识别算法效果。可与[table_rec_test_dataset](https://huggingface.co/datasets/SWHL/table_rec_test_dataset)配套使用。
 
 TEDS计算代码参考：[PaddleOCR](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.6/ppstructure/table/table_metric/table_metric.py) 和 [DAVAR-Lab-OCR](https://github.com/hikopensource/DAVAR-Lab-OCR/blob/main/davarocr/davar_table/utils/metric.py)
 
