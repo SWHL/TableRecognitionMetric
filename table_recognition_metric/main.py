@@ -10,13 +10,14 @@
 # Apache 2.0 License for more details.
 import argparse
 from collections import deque
-from typing import List, Optional, Tuple
+from typing import List, Optional
 
-from apted import APTED, Config
-from apted.helpers import Tree
+from apted import APTED
 from Levenshtein import distance
 from lxml import etree, html
 from lxml.html import HtmlElement
+
+from .utils import CustomConfig, TableTree
 
 
 class TEDS:
@@ -62,8 +63,8 @@ class TEDS:
                 tree_pred, tree_true, CustomConfig()
             ).compute_edit_distance()
 
-            n_nodes_pred = len(pred_element.xpath(".//*"))
-            n_nodes_true = len(gt_element.xpath(".//*"))
+            n_nodes_pred = tree_pred.size()
+            n_nodes_true = tree_true.size()
             n_nodes = max(n_nodes_pred, n_nodes_true)
             return 1.0 - (float(distance) / n_nodes)
         return 0.0
@@ -86,7 +87,7 @@ class TEDS:
 
     def load_html_tree(
         self, node: HtmlElement, parent: Optional[HtmlElement] = None
-    ) -> Optional[HtmlElement]:
+    ) -> Optional[TableTree]:
         """Converts HTML tree to the format required by apted"""
         global __tokens__
         if node.tag == "td":
@@ -117,48 +118,6 @@ class TEDS:
         if parent is None:
             return new_node
         return None
-
-
-class TableTree(Tree):
-    def __init__(
-        self,
-        tag: str,
-        colspan: Optional[int] = None,
-        rowspan: Optional[int] = None,
-        content: Optional[List[str]] = None,
-        *children: Tuple[Tree],
-    ):
-        self.tag = tag
-        self.colspan = colspan
-        self.rowspan = rowspan
-        self.content = content
-        self.children = list(children)
-
-
-class CustomConfig(Config):
-    @staticmethod
-    def maximum(*sequences):
-        """Get maximum possible value"""
-        return max(map(len, sequences))
-
-    def normalized_distance(self, *sequences):
-        """Get distance from 0 to 1"""
-        return float(distance(*sequences)) / self.maximum(*sequences)
-
-    def rename(self, node1: TableTree, node2: TableTree) -> float:
-        """Compares attributes of trees"""
-        if (
-            (node1.tag != node2.tag)
-            or (node1.colspan != node2.colspan)
-            or (node1.rowspan != node2.rowspan)
-        ):
-            return 1.0
-
-        if node1.tag == "td":
-            if node1.content or node2.content:
-                return self.normalized_distance(node1.content, node2.content)
-
-        return 0.0
 
 
 def main():
